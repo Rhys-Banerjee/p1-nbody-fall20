@@ -1,5 +1,5 @@
 /**
- * @author YOUR NAME THE STUDENT IN 201
+ * @author Rhys Banerjee
  * 
  * Simulation program for the NBody assignment
  */
@@ -18,15 +18,9 @@ public class NBody {
 	 */
 	public static double readRadius(String fname) throws FileNotFoundException  {
 		Scanner s = new Scanner(new File(fname));
-	
-		// TODO: read values at beginning of file to
-		// find the radius
-
-		double rad = 0.0;
-		
+		s.nextInt();
+		double rad = s.nextDouble();
 		s.close();
-		
-
 		return rad;
 	}
 	
@@ -41,9 +35,9 @@ public class NBody {
 
 		Scanner s = new Scanner(new File(fname));
 			
-		// TODO: read # bodies, store in nb
-
-		int nb = 0;          // # bodies to be read
+		CelestialBody[] bodies = new CelestialBody[s.nextInt()];
+		s.nextDouble();
+		int nb = bodies.length; // # bodies to be read
 
 		// TODO: Create array that can store nb CelestialBodies
 		// TODO: read and ignore radius
@@ -52,13 +46,14 @@ public class NBody {
 
 			// TODO: read data for each body
 			// TODO: construct new body object and add to array
-
+			CelestialBody planet = new CelestialBody(s.nextDouble(), s.nextDouble(), s.nextDouble(), s.nextDouble(), s.nextDouble(), s.next());
+			bodies[k] = planet;
 		}
 
 		s.close();
 
 		// TODO: return array of body objects read
-		return null;
+		return bodies;
 	}
 	public static void main(String[] args) throws FileNotFoundException{
 		double totalTime = 39447000.0;
@@ -81,7 +76,7 @@ public class NBody {
 
 		// TODO: for music/sound, uncomment next line
 
-		//StdAudio.play("images/2001.wav");
+		StdAudio.play("images/2001.wav");
 
 		// run simulation until over
 
@@ -89,32 +84,35 @@ public class NBody {
 			
 			// TODO: create double arrays xforces and yforces
 			//       to hold forces on each body
-
+			double[] xforces = new double[bodies.length];
+			double[] yforces = new double[bodies.length];
 
 			// TODO: loop over all bodies
 			// TODO: calculates netForcesX and netForcesY and store in
 			//       arrays xforces and yforces
-
-			for(int k=0; k < bodies.length; k++) {
-				// code here
-  			}
+			int xx = 0;
+			for (CelestialBody body : bodies)
+			{
+				xforces[xx] = body.calcNetForceExertedByX(bodies);
+				yforces[xx] = body.calcNetForceExertedByY(bodies);
+				xx += 1;
+			}	
 
 			// TODO: loop over all bodies and call update
 			//       with dt and corresponding xforces and yforces values
-			for(int k=0; k < bodies.length; k++){
-				// code here
+			int updateCounter = 0;
+			for (CelestialBody body : bodies)
+			{
+				body.update(dt, xforces[updateCounter], yforces[updateCounter]);
+				updateCounter += 1;
 			}
 
 			StdDraw.clear();
 			StdDraw.picture(0,0,"images/starfield.jpg");
 			
-			// TODO: loop over all bodies and call draw on each one
-
-			for(CelestialBody b : bodies){
-				// code here
-			}
-			StdDraw.show();
-			StdDraw.pause(10);
+			for (CelestialBody body : bodies)
+				body.draw();
+			StdDraw.show(10);
 
 		}
 		
