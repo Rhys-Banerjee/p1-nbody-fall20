@@ -110,9 +110,12 @@ public class NBody {
 			StdDraw.clear();
 			StdDraw.picture(0,0,"images/starfield.jpg");
 			
-			for (CelestialBody body : bodies)
+			for (CelestialBody body : bodies){
 				body.draw();
-			StdDraw.show(10);
+			}
+
+			StdDraw.show();
+			StdDraw.pause(10);
 
 		}
 		
